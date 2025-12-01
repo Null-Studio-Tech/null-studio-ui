@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ReactButton from '../../components/button/ghost-button/react/Button.tsx';
+import VueButton from '../../components/button/ghost-button/vue/Button.vue';
+---
+
+<Layout>
+  <main class="mx-auto max-w-3xl space-y-8 p-6 bg-lime-50">
+    <header>
+      <h1 class="text-2xl font-bold">Button 演示</h1>
+      <p class="text-sm text-gray-600">React 与 Vue 两种实现，Tailwind v4 样式。</p>
+    </header>
+
+    <section class="space-y-4">
+      <h2 class="text-lg font-semibold">React</h2>
+      <div class="flex gap-3">
+        <ReactButton client:load>Primary</ReactButton>
+        <ReactButton client:load variant="ghost">Ghost</ReactButton>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-lg font-semibold">Vue</h2>
+      <div class="flex gap-3">
+        <VueButton client:load>Primary</VueButton>
+        <VueButton client:load variant="ghost">Ghost</VueButton>
+      </div>
+    </section>
+  </main>
+</Layout>
