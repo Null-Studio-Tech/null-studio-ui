@@ -1,0 +1,130 @@
+---
+interface Props {
+  aspectRatio?: string;
+  class?: string;
+}
+
+const { aspectRatio = '16:9', class: className = '' } = Astro.props;
+---
+
+<aspect-container aspect-ratio={aspectRatio} class={className}>
+  <div class="aspect-container-content">
+    <slot />
+  </div>
+</aspect-container>
+
+<style is:global>
+  aspect-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
+  aspect-container .aspect-container-content {
+    position: relative;
+  }
+</style>
+
+<script>
+  class AspectContainerElement extends HTMLElement {
+    private content: HTMLDivElement | null = null;
+    private ratio: number;
+    private resizeObserver: ResizeObserver | null = null;
+
+    constructor() {
+      super();
+      this.ratio = this.parseAspectRatio(this.getAttribute('aspect-ratio') || '16:9');
+    }
+
+    private parseAspectRatio(aspectRatio: string): number {
+      const [widthRatio, heightRatio] = aspectRatio.split(':').map(Number);
+      return widthRatio / heightRatio;
+    }
+
+    connectedCallback() {
+      this.init();
+    }
+
+    disconnectedCallback() {
+      this.destroy();
+    }
+
+    static get observedAttributes() {
+      return ['aspect-ratio'];
+    }
+
+    attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+      if (name === 'aspect-ratio' && oldValue !== newValue) {
+        this.ratio = this.parseAspectRatio(newValue);
+        this.adjust();
+      }
+    }
+
+    private init() {
+      // 直接获取已存在的 content 元素
+      this.content = this.querySelector('.aspect-container-content') as HTMLDivElement;
+      
+      if (!this.content) {
+        console.warn('aspect-container: .aspect-container-content not found');
+        return;
+      }
+
+      // 初始调整
+      this.adjust();
+
+      // 监听元素尺寸变化
+      this.resizeObserver = new ResizeObserver(() => {
+        this.adjust();
+      });
+
+      this.resizeObserver.observe(this);
+    }
+
+    private adjust() {
+      if (!this.content) return;
+
+      const parentWidth = this.clientWidth;
+      const parentHeight = this.clientHeight;
+
+      if (parentWidth === 0 || parentHeight === 0) {
+        return;
+      }
+
+      // 计算基于父容器宽度的高度
+      const heightByWidth = parentWidth / this.ratio;
+      // 计算基于父容器高度的宽度
+      const widthByHeight = parentHeight * this.ratio;
+
+      let finalWidth: number;
+      let finalHeight: number;
+
+      // 策略：优先填充宽度或高度，确保至少一个维度与父容器相同
+      if (heightByWidth <= parentHeight) {
+        finalWidth = parentWidth;
+        finalHeight = heightByWidth;
+      } else {
+        finalWidth = widthByHeight;
+        finalHeight = parentHeight;
+      }
+
+      // 应用尺寸
+      this.content.style.width = `${finalWidth}px`;
+      this.content.style.height = `${finalHeight}px`;
+    }
+
+    private destroy() {
+      if (this.resizeObserver) {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
+      }
+    }
+  }
+
+  // 注册自定义元素
+  if (!customElements.get('aspect-container')) {
+    customElements.define('aspect-container', AspectContainerElement);
+  }
+</script>

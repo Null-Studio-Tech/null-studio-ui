@@ -1,3 +1,7 @@
+/// <reference types="astro/client" />
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare module '*.vue' {
