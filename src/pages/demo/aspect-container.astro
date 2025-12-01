@@ -92,6 +92,131 @@ import AspectContainerReact from "@/components/container/aspect-container/Aspect
         </AspectContainerAstro>
       </div>
     </section>
+
+    <h1 style="margin-top: 4rem;">内容缩放模式演示</h1>
+
+    <section>
+      <h2>16:9 缩放容器 - 1920px 设计稿 (Astro)</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerAstro
+          aspectRatio="16:9"
+          scaleContent={true}
+          designWidth={1920}
+        >
+          <div class="scaled-content">
+            <h3>固定设计稿内容 (1920x1080)</h3>
+            <p>这个内容按照 1920x1080 设计</p>
+            <p>容器会自动缩放以适配不同尺寸</p>
+            <div class="button-group">
+              <button>按钮 1</button>
+              <button>按钮 2</button>
+              <button>按钮 3</button>
+            </div>
+          </div>
+        </AspectContainerAstro>
+      </div>
+    </section>
+
+    <section>
+      <h2>16:9 缩放容器 - 1920px 设计稿 (React)</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerReact
+          aspectRatio="16:9"
+          scaleContent={true}
+          designWidth={1920}
+          client:only="react"
+        >
+          <div class="scaled-content">
+            <h3>固定设计稿内容 (1920x1080)</h3>
+            <p>这个内容按照 1920x1080 设计</p>
+            <p>容器会自动缩放以适配不同尺寸</p>
+            <div class="button-group">
+              <button>按钮 1</button>
+              <button>按钮 2</button>
+              <button>按钮 3</button>
+            </div>
+          </div>
+        </AspectContainerReact>
+      </div>
+    </section>
+
+    <section>
+      <h2>16:9 缩放容器 - 1920px 设计稿 (Vue)</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerVue
+          aspectRatio="16:9"
+          scaleContent={true}
+          designWidth={1920}
+          client:only="vue"
+        >
+          <div class="scaled-content">
+            <h3>固定设计稿内容 (1920x1080)</h3>
+            <p>这个内容按照 1920x1080 设计</p>
+            <p>容器会自动缩放以适配不同尺寸</p>
+            <div class="button-group">
+              <button>按钮 1</button>
+              <button>按钮 2</button>
+              <button>按钮 3</button>
+            </div>
+          </div>
+        </AspectContainerVue>
+      </div>
+    </section>
+
+    <section>
+      <h2>4:3 缩放容器 - 1280px 设计稿</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerAstro
+          aspectRatio="4:3"
+          scaleContent={true}
+          designWidth={1280}
+        >
+          <div class="scaled-content" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <h3>4:3 设计稿 (1280x960)</h3>
+            <p>适合传统显示器比例</p>
+            <div class="button-group">
+              <button>操作</button>
+              <button>编辑</button>
+            </div>
+          </div>
+        </AspectContainerAstro>
+      </div>
+    </section>
+
+    <section>
+      <h2>16:9 缩放容器 - 动画演示 (1920px 设计稿)</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerAstro
+          aspectRatio="16:9"
+          scaleContent={true}
+          designWidth={1920}
+        >
+          <div class="animated-content">
+            <div class="animated-title">
+              <h3>动画演示</h3>
+              <p>缩放模式下的动画效果</p>
+            </div>
+
+            <div class="animation-boxes">
+              <div class="box box-1">旋转</div>
+              <div class="box box-2">缩放</div>
+              <div class="box box-3">弹跳</div>
+              <div class="box box-4">渐变</div>
+            </div>
+
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+
+            <div class="floating-circles">
+              <div class="circle circle-1"></div>
+              <div class="circle circle-2"></div>
+              <div class="circle circle-3"></div>
+            </div>
+          </div>
+        </AspectContainerAstro>
+      </div>
+    </section>
   </main>
 
   <AspectContainerAstro />
@@ -163,12 +288,295 @@ import AspectContainerReact from "@/components/container/aspect-container/Aspect
     text-align: center;
   }
 
+  .scaled-content {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .scaled-content h3 {
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .scaled-content p {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .button-group {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .button-group button {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .button-group button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* 动画演示样式 */
+  .animated-content {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .animated-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    z-index: 10;
+  }
+
+  .animated-title h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 3rem;
+    animation: fadeInDown 1s ease-out;
+  }
+
+  .animated-title p {
+    margin: 0;
+    font-size: 1.5rem;
+    opacity: 0.9;
+    animation: fadeInUp 1s ease-out 0.3s both;
+  }
+
+  /* 动画盒子 */
+  .animation-boxes {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    z-index: 10;
+  }
+
+  .box {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 3px solid white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    backdrop-filter: blur(10px);
+  }
+
+  .box-1 {
+    animation: rotate360 3s linear infinite;
+  }
+
+  .box-2 {
+    animation: pulseScale 2s ease-in-out infinite;
+  }
+
+  .box-3 {
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  .box-4 {
+    animation: colorShift 3s ease-in-out infinite;
+  }
+
+  /* 进度条 */
+  .progress-bar {
+    width: 600px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #fff, #f0f);
+    border-radius: 10px;
+    animation: progressAnimation 3s ease-in-out infinite;
+  }
+
+  /* 浮动圆圈 */
+  .floating-circles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .circle-1 {
+    width: 150px;
+    height: 150px;
+    top: 10%;
+    left: 5%;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .circle-2 {
+    width: 100px;
+    height: 100px;
+    top: 60%;
+    right: 10%;
+    animation: float 4s ease-in-out infinite 1s;
+  }
+
+  .circle-3 {
+    width: 80px;
+    height: 80px;
+    bottom: 15%;
+    left: 15%;
+    animation: float 5s ease-in-out infinite 2s;
+  }
+
+  /* 动画定义 */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes rotate360 {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulseScale {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-30px);
+    }
+  }
+
+  @keyframes colorShift {
+    0%, 100% {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: white;
+    }
+    33% {
+      background: rgba(255, 100, 200, 0.3);
+      border-color: #ff64c8;
+    }
+    66% {
+      background: rgba(100, 200, 255, 0.3);
+      border-color: #64c8ff;
+    }
+  }
+
+  @keyframes progressAnimation {
+    0% {
+      width: 0%;
+    }
+    50% {
+      width: 100%;
+    }
+    100% {
+      width: 0%;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    33% {
+      transform: translate(30px, -30px);
+    }
+    66% {
+      transform: translate(-20px, 20px);
+    }
+  }
+
   @media (max-width: 768px) {
     .demo-wrapper,
     .demo-wrapper.tall,
     .demo-wrapper.wide {
       width: 100%;
       height: 300px;
+    }
+
+    .animation-boxes {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .box {
+      width: 80px;
+      height: 80px;
+      font-size: 1rem;
+    }
+
+    .progress-bar {
+      width: 90%;
     }
   }
 </style>

@@ -10,18 +10,24 @@ interface AspectContainerProps {
   aspectRatio?: string;
   className?: string;
   children?: ReactNode;
+  scaleContent?: boolean;
+  designWidth?: number;
 }
 
 const AspectContainer: React.FC<AspectContainerProps> = ({
   aspectRatio = "16:9",
   className = "",
   children,
+  scaleContent = false,
+  designWidth,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [contentStyle, setContentStyle] = useState<CSSProperties>({
     width: "100%",
     height: "100%",
+    position: "relative",
   });
+  const [scale, setScale] = useState<number>(1);
 
   // 解析宽高比
   const parseAspectRatio = (ratio: string): number => {
@@ -63,8 +69,19 @@ const AspectContainer: React.FC<AspectContainerProps> = ({
     setContentStyle({
       width: `${finalWidth}px`,
       height: `${finalHeight}px`,
+      position: "relative", // 为 scale-wrapper 提供定位上下文
     });
-  }, [aspectRatio]);
+
+    // 计算缩放比例
+    if (scaleContent && designWidth) {
+      const designHeight = designWidth / ratio;
+      const scaleValue = Math.min(
+        finalWidth / designWidth,
+        finalHeight / designHeight,
+      );
+      setScale(scaleValue);
+    }
+  }, [aspectRatio, scaleContent, designWidth]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -82,6 +99,31 @@ const AspectContainer: React.FC<AspectContainerProps> = ({
     };
   }, [aspectRatio, adjust]); // aspectRatio 或 adjust 变化时重新计算
 
+  // 计算设计尺寸
+  const designHeight = React.useMemo(() => {
+    if (scaleContent && designWidth) {
+      const ratio = parseAspectRatio(aspectRatio);
+      return designWidth / ratio;
+    }
+    return 0;
+  }, [scaleContent, designWidth, aspectRatio]);
+
+  // scale-wrapper 样式
+  const scaleWrapperStyle: CSSProperties = React.useMemo(() => {
+    if (scaleContent && designWidth) {
+      return {
+        width: `${designWidth}px`,
+        height: `${designHeight}px`,
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: `translate(-50%, -50%) scale(${scale})`,
+        transformOrigin: "center center",
+      };
+    }
+    return {};
+  }, [scaleContent, designWidth, designHeight, scale]);
+
   return (
     <div
       ref={containerRef}
@@ -89,7 +131,13 @@ const AspectContainer: React.FC<AspectContainerProps> = ({
       style={containerStyle}
     >
       <div className="aspect-container-content" style={contentStyle}>
-        {children}
+        {scaleContent && designWidth ? (
+          <div className="scale-wrapper" style={scaleWrapperStyle}>
+            {children}
+          </div>
+        ) : (
+          children
+        )}
       </div>
     </div>
   );

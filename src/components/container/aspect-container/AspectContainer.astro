@@ -2,12 +2,24 @@
 interface Props {
   aspectRatio?: string;
   class?: string;
+  scaleContent?: boolean;
+  designWidth?: number;
 }
 
-const { aspectRatio = "16:9", class: className = "" } = Astro.props;
+const {
+  aspectRatio = "16:9",
+  class: className = "",
+  scaleContent = false,
+  designWidth,
+} = Astro.props;
 ---
 
-<aspect-container aspect-ratio={aspectRatio} class={className}>
+<aspect-container
+  aspect-ratio={aspectRatio}
+  class={className}
+  scale-content={scaleContent}
+  design-width={designWidth}
+>
   <div class="aspect-container-content">
     <slot />
   </div>
@@ -33,12 +45,18 @@ const { aspectRatio = "16:9", class: className = "" } = Astro.props;
     private content: HTMLDivElement | null = null;
     private ratio: number;
     private resizeObserver: ResizeObserver | null = null;
+    private scaleContent: boolean = false;
+    private designWidth: number | null = null;
+    private scaleWrapper: HTMLDivElement | null = null;
 
     constructor() {
       super();
       this.ratio = this.parseAspectRatio(
         this.getAttribute("aspect-ratio") || "16:9"
       );
+      this.scaleContent = this.getAttribute("scale-content") === "true";
+      const designWidthAttr = this.getAttribute("design-width");
+      this.designWidth = designWidthAttr ? parseFloat(designWidthAttr) : null;
     }
 
     private parseAspectRatio(aspectRatio: string): number {
@@ -55,12 +73,18 @@ const { aspectRatio = "16:9", class: className = "" } = Astro.props;
     }
 
     static get observedAttributes() {
-      return ["aspect-ratio"];
+      return ["aspect-ratio", "scale-content", "design-width"];
     }
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
       if (name === "aspect-ratio" && oldValue !== newValue) {
         this.ratio = this.parseAspectRatio(newValue);
+        this.adjust();
+      } else if (name === "scale-content" && oldValue !== newValue) {
+        this.scaleContent = newValue === "true";
+        this.adjust();
+      } else if (name === "design-width" && oldValue !== newValue) {
+        this.designWidth = newValue ? parseFloat(newValue) : null;
         this.adjust();
       }
     }
@@ -74,6 +98,24 @@ const { aspectRatio = "16:9", class: className = "" } = Astro.props;
       if (!this.content) {
         console.warn("aspect-container: .aspect-container-content not found");
         return;
+      }
+
+      // 如果启用缩放模式,创建 scale-wrapper
+      if (this.scaleContent && this.designWidth) {
+        // 获取原始内容
+        const originalContent = Array.from(this.content.childNodes);
+
+        // 创建 scale-wrapper
+        this.scaleWrapper = document.createElement("div");
+        this.scaleWrapper.className = "scale-wrapper";
+
+        // 将原始内容移动到 scale-wrapper 中
+        originalContent.forEach((node) => {
+          this.scaleWrapper!.appendChild(node);
+        });
+
+        // 将 scale-wrapper 添加到 content 中
+        this.content.appendChild(this.scaleWrapper);
       }
 
       // 初始调整
@@ -117,6 +159,23 @@ const { aspectRatio = "16:9", class: className = "" } = Astro.props;
       // 应用尺寸
       this.content.style.width = `${finalWidth}px`;
       this.content.style.height = `${finalHeight}px`;
+
+      // 应用缩放
+      if (this.scaleContent && this.designWidth && this.scaleWrapper) {
+        const designHeight = this.designWidth / this.ratio;
+        const scale = Math.min(
+          finalWidth / this.designWidth,
+          finalHeight / designHeight
+        );
+
+        this.scaleWrapper.style.width = `${this.designWidth}px`;
+        this.scaleWrapper.style.height = `${designHeight}px`;
+        this.scaleWrapper.style.position = "absolute";
+        this.scaleWrapper.style.top = "50%";
+        this.scaleWrapper.style.left = "50%";
+        this.scaleWrapper.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        this.scaleWrapper.style.transformOrigin = "center center";
+      }
     }
 
     private destroy() {

@@ -5,7 +5,10 @@
       class="aspect-container-content"
       :style="contentStyle"
     >
-      <slot />
+      <div v-if="scaleContent && designWidth" class="scale-wrapper" :style="scaleWrapperStyle">
+        <slot />
+      </div>
+      <slot v-else />
     </div>
   </div>
 </template>
@@ -16,11 +19,15 @@ import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 interface Props {
   aspectRatio?: string;
   class?: string;
+  scaleContent?: boolean;
+  designWidth?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   aspectRatio: "16:9",
   class: "",
+  scaleContent: false,
+  designWidth: undefined,
 });
 
 const containerRef = ref<HTMLElement | null>(null);
@@ -28,7 +35,9 @@ const contentRef = ref<HTMLElement | null>(null);
 const contentStyle = ref({
   width: "100%",
   height: "100%",
+  position: "relative" as const,
 });
+const scale = ref(1);
 
 let resizeObserver: ResizeObserver | null = null;
 
@@ -39,6 +48,30 @@ const parseAspectRatio = (aspectRatio: string): number => {
 };
 
 const ratio = computed(() => parseAspectRatio(props.aspectRatio));
+
+// 计算设计高度
+const designHeight = computed(() => {
+  if (props.scaleContent && props.designWidth) {
+    return props.designWidth / ratio.value;
+  }
+  return 0;
+});
+
+// scale-wrapper 样式
+const scaleWrapperStyle = computed(() => {
+  if (props.scaleContent && props.designWidth) {
+    return {
+      width: `${props.designWidth}px`,
+      height: `${designHeight.value}px`,
+      position: "absolute" as const,
+      top: "50%",
+      left: "50%",
+      transform: `translate(-50%, -50%) scale(${scale.value})`,
+      transformOrigin: "center center",
+    };
+  }
+  return {};
+});
 
 // 调整尺寸
 const adjust = () => {
@@ -72,7 +105,15 @@ const adjust = () => {
   contentStyle.value = {
     width: `${finalWidth}px`,
     height: `${finalHeight}px`,
+    position: "relative", // 为 scale-wrapper 提供定位上下文
   };
+
+  // 计算缩放比例
+  if (props.scaleContent && props.designWidth) {
+    const designH = props.designWidth / ratio.value;
+    const scaleValue = Math.min(finalWidth / props.designWidth, finalHeight / designH);
+    scale.value = scaleValue;
+  }
 };
 
 // 监听 aspectRatio 变化
