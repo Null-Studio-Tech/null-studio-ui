@@ -7,8 +7,9 @@
 ## 使用示例
 
 ### React
+
 ```tsx
-import Container from '@/components/container/react/Container';
+import Container from "@/components/container/react/Container";
 
 export default function Demo() {
   return (
@@ -21,9 +22,10 @@ export default function Demo() {
 ```
 
 ### Vue
+
 ```vue
 <script setup lang="ts">
-import Container from '@/components/container/vue/Container.vue'
+import Container from "@/components/container/vue/Container.vue";
 </script>
 
 <template>
@@ -35,5 +37,6 @@ import Container from '@/components/container/vue/Container.vue'
 ```
 
 ## 无障碍
+
 - 容器用于视觉分组，无特定语义；根据内容选用合适语义标签（section/article/aside）。
 - 保持文本对比度可读。

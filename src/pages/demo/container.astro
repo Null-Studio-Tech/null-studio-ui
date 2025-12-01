@@ -1,7 +1,7 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ReactContainer from '../../components/container/glassmorphism-container/react/Container.tsx';
-import VueContainer from '../../components/container/glassmorphism-container/vue/Container.vue';
+import Layout from "@/layouts/Layout.astro";
+import ReactContainer from "@/components/container/glassmorphism-container/GlassmorphismContainer.tsx";
+import VueContainer from "@/components/container/glassmorphism-container/GlassmorphismContainer.vue";
 ---
 
 <Layout>
@@ -15,7 +15,9 @@ import VueContainer from '../../components/container/glassmorphism-container/vue
       <h2 class="text-lg font-semibold">React</h2>
       <ReactContainer client:load>
         <h3 class="text-base font-semibold">Hello from React</h3>
-        <p class="text-sm text-gray-700">Creative glassmorphism container with blur.</p>
+        <p class="text-sm text-gray-700">
+          Creative glassmorphism container with blur.
+        </p>
       </ReactContainer>
     </section>
 
@@ -23,7 +25,9 @@ import VueContainer from '../../components/container/glassmorphism-container/vue
       <h2 class="text-lg font-semibold">Vue</h2>
       <VueContainer client:load>
         <h3 class="text-base font-semibold">Hello from Vue</h3>
-        <p class="text-sm text-gray-700">Creative glassmorphism container with blur.</p>
+        <p class="text-sm text-gray-700">
+          Creative glassmorphism container with blur.
+        </p>
       </VueContainer>
     </section>
   </main>

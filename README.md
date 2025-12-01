@@ -17,16 +17,21 @@
 ## 快速开始
 
 \`\`\`bash
+
 # 安装依赖
+
 pnpm install
 
 # 启动开发服务器
+
 pnpm dev
 
 # 构建生产版本
+
 pnpm build
 
 # 代码检查与格式化
+
 pnpm lint
 pnpm format
 \`\`\`
@@ -36,10 +41,12 @@ pnpm format
 ## 组件分类
 
 ### Button（按钮）
+
 - **Primary**：多彩渐变 + 浮动阴影
 - **Ghost**：半透明毛玻璃质感
 
 ### Container（容器）
+
 - **Glassmorphism**：玻璃拟态风格，支持深色模式
 
 ## 项目结构
@@ -47,33 +54,36 @@ pnpm format
 \`\`\`
 src/
 ├── components/
-│   ├── button/
-│   │   ├── react/Button.tsx
-│   │   ├── vue/Button.vue
-│   │   ├── README.md
-│   │   └── AI.md
-│   └── container/
-│       ├── react/Container.tsx
-│       ├── vue/Container.vue
-│       ├── README.md
-│       └── AI.md
+│ ├── button/
+│ │ ├── react/Button.tsx
+│ │ ├── vue/Button.vue
+│ │ ├── README.md
+│ │ └── AI.md
+│ └── container/
+│ ├── react/Container.tsx
+│ ├── vue/Container.vue
+│ ├── README.md
+│ └── AI.md
 ├── pages/
-│   ├── index.astro          # 组件索引首页
-│   └── demo/
-│       ├── button.astro
-│       └── container.astro
+│ ├── index.astro # 组件索引首页
+│ └── demo/
+│ ├── button.astro
+│ └── container.astro
 ├── layouts/Layout.astro
-└── styles/global.css         # Tailwind v4 入口
+└── styles/global.css # Tailwind v4 入口
 \`\`\`
 
 ## 技术细节
 
 ### Tailwind v4
+
 使用全新的 `@import "tailwindcss";` 语法，无需传统的 `tailwind.config.js`：
+
 - 全局样式：`src/styles/global.css`
 - Vite 插件：`@tailwindcss/vite`（已在 `astro.config.mjs` 启用）
 
 ### 组件规范
+
 - 每个分类目录包含 `react/` 与 `vue/` 子目录
 - `README.md`：设计理念、使用示例、无障碍指南
 - `AI.md`：简化的 API、实现路径、使用片段

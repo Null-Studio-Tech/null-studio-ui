@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="containerRef"
-    class="aspect-container"
-    :class="className"
-  >
+  <div ref="containerRef" class="aspect-container" :class="className">
     <div
       ref="contentRef"
       class="aspect-container-content"
@@ -15,11 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-
-// 确保 DOM 类型可用
-type HTMLDiv = globalThis.HTMLDivElement;
-type ResizeObs = globalThis.ResizeObserver;
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 
 interface Props {
   aspectRatio?: string;
@@ -27,22 +19,22 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  aspectRatio: '16:9',
-  class: '',
+  aspectRatio: "16:9",
+  class: "",
 });
 
-const containerRef = ref<HTMLDiv | null>(null);
-const contentRef = ref<HTMLDiv | null>(null);
+const containerRef = ref<HTMLElement | null>(null);
+const contentRef = ref<HTMLElement | null>(null);
 const contentStyle = ref({
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "100%",
 });
 
-let resizeObserver: ResizeObs | null = null;
+let resizeObserver: ResizeObserver | null = null;
 
 // 解析宽高比
 const parseAspectRatio = (aspectRatio: string): number => {
-  const [widthRatio, heightRatio] = aspectRatio.split(':').map(Number);
+  const [widthRatio, heightRatio] = aspectRatio.split(":").map(Number);
   return widthRatio / heightRatio;
 };
 
@@ -84,19 +76,21 @@ const adjust = () => {
 };
 
 // 监听 aspectRatio 变化
-watch(() => props.aspectRatio, () => {
-  adjust();
-});
+watch(
+  () => props.aspectRatio,
+  () => {
+    adjust();
+  },
+);
 
 // 组件挂载后初始化
 onMounted(() => {
   if (!containerRef.value) return;
-
   // 初始调整
   adjust();
 
   // 监听容器尺寸变化
-  resizeObserver = new (globalThis.ResizeObserver)(() => {
+  resizeObserver = new globalThis.ResizeObserver(() => {
     adjust();
   });
 

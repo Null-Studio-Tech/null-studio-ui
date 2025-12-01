@@ -1,31 +1,54 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-	<main class="mx-auto max-w-5xl space-y-12 p-8">
-		<header class="text-center">
-			<h1 class="bg-linear-0-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-5xl font-bold text-transparent">
-				Null Studio UI
-			</h1>
-			<p class="mt-3 text-lg text-gray-600">
-				创意与功能并重的组件库 · Tailwind v4 · React & Vue
-			</p>
-		</header>
+  <main class="mx-auto max-w-5xl space-y-12 p-8">
+    <header class="text-center">
+      <h1
+        class="bg-linear-0-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-5xl font-bold text-transparent"
+      >
+        Null Studio UI
+      </h1>
+      <p class="mt-3 text-lg text-gray-600">
+        创意与功能并重的组件库 · Tailwind v4 · React & Vue
+      </p>
+    </header>
 
-		<section class="grid gap-4 md:grid-cols-2">
-			<a href="/demo/button" class="group block rounded-2xl border border-gray-200/60 bg-white/70 p-6 transition-all hover:shadow-lg hover:-translate-y-0.5">
-				<h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600">Button 按钮</h3>
-				<p class="mt-2 text-sm text-gray-600">渐变、浮动、毛玻璃风格</p>
-			</a>
-			<a href="/demo/container" class="group block rounded-2xl border border-gray-200/60 bg-white/70 p-6 transition-all hover:shadow-lg hover:-translate-y-0.5">
-				<h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600">Container 容器</h3>
-				<p class="mt-2 text-sm text-gray-600">玻璃拟态，兼容深色模式</p>
-			</a>
-			<a href="/demo/aspect-container" class="group block rounded-2xl border border-gray-200/60 bg-white/70 p-6 transition-all hover:shadow-lg hover:-translate-y-0.5">
-				<h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600">AspectContainer 宽高比容器</h3>
-				<p class="mt-2 text-sm text-gray-600">固定比例，动态适应父容器</p>
-			</a>
-		</section>
-	</main>
+    <section class="grid gap-4 md:grid-cols-2">
+      <a
+        href="/demo/button"
+        class="group block rounded-2xl border border-gray-200/60 bg-white/70 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      >
+        <h3
+          class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600"
+        >
+          Button 按钮
+        </h3>
+        <p class="mt-2 text-sm text-gray-600">渐变、浮动、毛玻璃风格</p>
+      </a>
+      <a
+        href="/demo/container"
+        class="group block rounded-2xl border border-gray-200/60 bg-white/70 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      >
+        <h3
+          class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600"
+        >
+          Container 容器
+        </h3>
+        <p class="mt-2 text-sm text-gray-600">玻璃拟态，兼容深色模式</p>
+      </a>
+      <a
+        href="/demo/aspect-container"
+        class="group block rounded-2xl border border-gray-200/60 bg-white/70 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      >
+        <h3
+          class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600"
+        >
+          AspectContainer 宽高比容器
+        </h3>
+        <p class="mt-2 text-sm text-gray-600">固定比例，动态适应父容器</p>
+      </a>
+    </section>
+  </main>
 </Layout>

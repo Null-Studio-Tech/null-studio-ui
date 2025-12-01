@@ -1,140 +1,101 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import AspectContainerAstro from "../../components/container/aspect-container/AspectContainer.astro";
+import Layout from "@/layouts/Layout.astro";
+import AspectContainerAstro from "@/components/container/aspect-container/AspectContainer.astro";
+import AspectContainerVue from "@/components/container/aspect-container/AspectContainer.vue";
+import AspectContainerReact from "@/components/container/aspect-container/AspectContainer.tsx";
 ---
 
 <Layout title="Aspect Container Demo">
   <main>
-    <h1>固定宽高比容器演示 (Web Component)</h1>
+    <h1>固定宽高比容器演示</h1>
 
     <section>
-      <h2>16:9 宽高比容器</h2>
-      <div class="demo-wrapper">
-        <aspect-container aspect-ratio="16:9">
+      <h2>16:9 宽高比容器(Astro)</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerAstro aspectRatio="16:9">
           <div class="demo-content">
             <p>16:9 比例内容</p>
             <p>容器会根据父元素尺寸自动调整</p>
           </div>
-        </aspect-container>
+        </AspectContainerAstro>
+      </div>
+    </section>
+
+    <section>
+      <h2>16:9 宽高比容器(Vue)</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerVue aspectRatio="16:9" client:only="vue">
+          <div class="demo-content">
+            <p>16:9 比例内容</p>
+            <p>容器会根据父元素尺寸自动调整</p>
+          </div>
+        </AspectContainerVue>
+      </div>
+    </section>
+
+    <section>
+      <h2>16:9 宽高比容器(React)</h2>
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerReact aspectRatio="16:9" client:only="react">
+          <div class="demo-content">
+            <p>16:9 比例内容</p>
+            <p>容器会根据父元素尺寸自动调整</p>
+          </div>
+        </AspectContainerReact>
       </div>
     </section>
 
     <section>
       <h2>4:3 宽高比容器</h2>
-      <div class="demo-wrapper">
-        <aspect-container aspect-ratio="4:3">
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerAstro aspectRatio="4:3">
           <div class="demo-content">
             <p>4:3 比例内容</p>
             <p>无论父容器如何变化，始终保持比例</p>
           </div>
-        </aspect-container>
+        </AspectContainerAstro>
       </div>
     </section>
 
     <section>
       <h2>1:1 正方形容器</h2>
-      <div class="demo-wrapper">
-        <aspect-container aspect-ratio="1:1">
+      <div class="demo-wrapper resize overflow-hidden">
+        <AspectContainerAstro aspectRatio="1:1">
           <div class="demo-content">
             <p>1:1 比例内容</p>
             <p>正方形容器</p>
           </div>
-        </aspect-container>
+        </AspectContainerAstro>
       </div>
     </section>
 
     <section>
       <h2>21:9 超宽容器</h2>
-      <div class="demo-wrapper tall">
-        <aspect-container aspect-ratio="21:9">
+      <div class="demo-wrapper tall resize overflow-hidden">
+        <AspectContainerAstro aspectRatio="21:9">
           <div class="demo-content">
             <p>21:9 比例内容</p>
             <p>超宽屏比例</p>
           </div>
-        </aspect-container>
+        </AspectContainerAstro>
       </div>
     </section>
 
     <section>
       <h2>9:16 竖屏容器</h2>
-      <div class="demo-wrapper wide">
-        <aspect-container aspect-ratio="9:16">
+      <div class="demo-wrapper wide resize overflow-hidden">
+        <AspectContainerAstro aspectRatio="9:16">
           <div class="demo-content">
             <p>9:16 比例内容</p>
             <p>竖屏比例，适合移动端</p>
           </div>
-        </aspect-container>
+        </AspectContainerAstro>
       </div>
-    </section>
-
-    <section>
-      <h2>可调整大小的父容器</h2>
-      <div class="demo-wrapper resizable">
-        <aspect-container aspect-ratio="16:9">
-          <div class="demo-content">
-            <p>16:9 比例内容</p>
-            <p>尝试调整父容器大小（右下角拖拽）</p>
-          </div>
-        </aspect-container>
-      </div>
-    </section>
-
-    <section>
-      <h2>动态创建示例</h2>
-      <div class="demo-wrapper" id="dynamic-container"></div>
-      <button id="create-btn">动态创建 aspect-container</button>
-      <button id="change-ratio-btn">切换比例</button>
     </section>
   </main>
 
   <AspectContainerAstro />
 </Layout>
-
-<script>
-  // 动态创建示例
-  const dynamicContainer = document.getElementById('dynamic-container');
-  const createBtn = document.getElementById('create-btn');
-  const changeRatioBtn = document.getElementById('change-ratio-btn');
-  
-  let currentRatio = '16:9';
-  const ratios = ['16:9', '4:3', '1:1', '21:9', '9:16'];
-  let ratioIndex = 0;
-
-  createBtn?.addEventListener('click', () => {
-    if (dynamicContainer) {
-      dynamicContainer.innerHTML = '';
-      const container = document.createElement('aspect-container');
-      container.setAttribute('aspect-ratio', currentRatio);
-      
-      const content = document.createElement('div');
-      content.className = 'demo-content';
-      content.innerHTML = `
-        <p>动态创建的容器</p>
-        <p>当前比例: ${currentRatio}</p>
-      `;
-      
-      container.appendChild(content);
-      dynamicContainer.appendChild(container);
-    }
-  });
-
-  changeRatioBtn?.addEventListener('click', () => {
-    ratioIndex = (ratioIndex + 1) % ratios.length;
-    currentRatio = ratios[ratioIndex];
-    
-    const container = dynamicContainer?.querySelector('aspect-container');
-    if (container) {
-      container.setAttribute('aspect-ratio', currentRatio);
-      const content = container.querySelector('.demo-content');
-      if (content) {
-        content.innerHTML = `
-          <p>动态创建的容器</p>
-          <p>当前比例: ${currentRatio}</p>
-        `;
-      }
-    }
-  });
-</script>
 
 <style>
   main {
@@ -163,7 +124,7 @@ import AspectContainerAstro from "../../components/container/aspect-container/As
     width: 600px;
     height: 400px;
     border: 2px solid #ddd;
-    background: #f5f5f5;
+    background: #000;
     padding: 1rem;
   }
 
@@ -200,22 +161,6 @@ import AspectContainerAstro from "../../components/container/aspect-container/As
     margin: 0.5rem 0;
     font-size: 1.2rem;
     text-align: center;
-  }
-
-  button {
-    margin: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  button:hover {
-    background: #5568d3;
   }
 
   @media (max-width: 768px) {

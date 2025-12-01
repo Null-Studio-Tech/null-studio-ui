@@ -1,5 +1,5 @@
 {
-    "[javascript]": {
+  "[javascript]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     },
@@ -29,7 +29,7 @@
     },
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-    "editor.formatOnSave": true,
+  "editor.formatOnSave": true,
   "eslint.format.enable": true,
   "eslint.validate": [
     "javascript",
@@ -38,6 +38,7 @@
     "typescriptreact",
     "vue",
     "json",
-    "jsonc",
+    "jsonc"
   ],
+  "cSpell.words": ["glassmorphism"]
 }
